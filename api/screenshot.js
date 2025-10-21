@@ -1,6 +1,16 @@
 import chromium from '@sparticuz/chromium';
 import puppeteer from "puppeteer-core";
 
+const isLocal = !process.env.AWS_REGION && !process.env.VERCEL;
+let executablePath;
+
+if (isLocal) {
+    const puppeteerLocal = await import('puppeteer');
+    executablePath = puppeteerLocal.executablePath();
+} else {
+    executablePath = await chromium.executablePath();
+}
+
 export default async function handler(req, res) {
     const { url } = req.query;
     if (!url) {
@@ -9,14 +19,14 @@ export default async function handler(req, res) {
 
     try {
         const browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath,
+            headless: true,
         });
 
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        await page.goto(url, { waitUntil: 'networkidle2' });
         const screenshot = await page.screenshot({ fullPage: true });
 
         await browser.close();
