@@ -27,6 +27,6 @@ export default async function handler(req, res) {
         res.end(screenshot, "binary");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to take screenshot" });
+        res.status(500).json({ error: error });
     }
 }
