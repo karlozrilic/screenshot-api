@@ -1,32 +1,31 @@
-import chromium from "@sparticuz/chromium-min";
+import chromium from '@sparticuz/chromium';
 import puppeteer from "puppeteer-core";
 
 export default async function handler(req, res) {
     const { url } = req.query;
-
     if (!url) {
-        return res.status(400).json({ error: "Missing ?url= parameter" });
+        return res.status(400).json({ error: 'Missing ?url= parameter' });
     }
 
     try {
         const browser = await puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: chromium.headless,
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
         });
 
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: "networkidle2" });
-
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
         const screenshot = await page.screenshot({ fullPage: true });
+
         await browser.close();
 
-        res.setHeader("Content-Type", "image/png");
-        res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate");
-        res.end(screenshot, "binary");
+        res.setHeader('Content-Type', 'image/png');
+        res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
+        res.end(screenshot, 'binary');
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: error });
+        console.error('Error generating screenshot:', error);
+        res.status(500).json({ error: error?.message || 'Failed to generate screenshot' });
     }
 }
