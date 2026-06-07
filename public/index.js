@@ -5,14 +5,20 @@ async function capture() {
     document.getElementById('loading').style.display = 'block';
     document.getElementById('result').innerHTML = '';
 
-    const res = await fetch(`/api/screenshot?url=${encodeURIComponent(url)}`);
-    const { image } = await res.json();
+    try {
+        const res = await fetch(`/api/screenshot?url=${encodeURIComponent(url)}`);
+        const { image } = await res.json();
 
-    document.getElementById('loading').style.display = 'none';
-    document.getElementById('result').innerHTML = `
-        <div class="card">
-            <img src="${image}" alt="Preview of ${url}" />
-            <div class="label">${url}</div>
-        </div>
-    `;
+        document.getElementById('result').innerHTML = `
+            <div class="card">
+                <img src="${image}" alt="Preview of ${url}" />
+                <div class="label">${url}</div>
+            </div>
+        `;
+    } catch (error) {
+        console.error(error);
+        document.getElementById('result').innerHTML = `There was an error`;
+    } finally {
+        document.getElementById('loading').style.display = 'none';
+    }
 }
