@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenchot API</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <link href="./style.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>Page Preview</h2>
+    <input id="url" type="text" placeholder="https://example.com" />
+    <button onclick="capture()">Capture</button>
+    <div id="loading" class="loading" style="display:none">Capturing...</div>
+    <div id="result"></div>
+
+    <script src="./index.js"></script>
+</body>
+</html>
