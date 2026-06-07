@@ -375,6 +375,24 @@ input:focus {
     flex-shrink: 0;
 }
 
+.modal-github {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.modal-github:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+}
+
 .modal-title {
     font-size: 13px;
     font-weight: 500;
