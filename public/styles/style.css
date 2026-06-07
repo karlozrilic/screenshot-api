@@ -375,6 +375,12 @@ input:focus {
     flex-shrink: 0;
 }
 
+.modal-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .modal-github {
     display: flex;
     align-items: center;
