@@ -1,10 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-
-const ALLOWED_ORIGINS = [
-    process.env.ALLOWED_ORIGIN,
-    'http://localhost:3000',
-    'http://localhost:3001',
-].filter(Boolean) as string[];
+import { ALLOWED_ORIGINS } from './constants.js';
 
 export function setCorsHeaders(req: VercelRequest, res: VercelResponse) {
     const origin = req.headers.origin || '';

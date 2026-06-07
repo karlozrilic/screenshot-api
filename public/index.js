@@ -7,7 +7,7 @@ async function capture() {
 
     try {
         const res = await fetch(`/api/screenshot?url=${encodeURIComponent(url)}`);
-        const data = await res.json()
+        const data = await res.json();
 
         if (!res.ok || data.error) {
             throw new Error(data.error || 'Something went wrong');
