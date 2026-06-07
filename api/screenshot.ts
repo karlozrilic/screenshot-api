@@ -26,7 +26,16 @@ export default withProxy(async (req: VercelRequest, res: VercelResponse) => {
             'Accept-Language': 'en-US,en;q=0.9',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         });
-        await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
+        await page.setRequestInterception(true);
+        page.on('request', (req) => {
+            if (['media', 'websocket', 'eventsource'].includes(req.resourceType())) {
+                req.abort();
+            } else {
+                req.continue();
+            }
+        });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 8000 }); // faster than networkidle0
+        // await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
         await new Promise(resolve => setTimeout(resolve, 2000)) // extra wait for JS rendering
 
         const title = await page.title();
