@@ -6,8 +6,12 @@ async function capture() {
     document.getElementById('result').innerHTML = '';
 
     try {
-        const res = await fetch(`/api/screenshot?url=${encodeURIComponent(url)}`);
-        const { image } = await res.json();
+        const data = await fetch(`/api/screenshot?url=${encodeURIComponent(url)}`);
+        if (data.error) {
+            throw data.error;
+        }
+
+        const { image } = await data.json();
 
         document.getElementById('result').innerHTML = `
             <div class="card">
@@ -17,7 +21,7 @@ async function capture() {
         `;
     } catch (error) {
         console.error(error);
-        document.getElementById('result').innerHTML = `There was an error`;
+        document.getElementById('result').innerHTML = `<p style="color:red">${error}</p>`;
     } finally {
         document.getElementById('loading').style.display = 'none';
     }
