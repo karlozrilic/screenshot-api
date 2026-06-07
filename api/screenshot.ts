@@ -34,8 +34,7 @@ export default withProxy(async (req: VercelRequest, res: VercelResponse) => {
                 req.continue();
             }
         });
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 8000 }); // faster than networkidle0
-        // await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
+        await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
         await new Promise(resolve => setTimeout(resolve, 2000)) // extra wait for JS rendering
 
         const title = await page.title();
