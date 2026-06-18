@@ -52,6 +52,7 @@ export default withProxy(async (req: VercelRequest, res: VercelResponse) => {
 
         const screenshot = await page.screenshot({ type: 'png', encoding: 'base64' });
         await browser.close();
+        browser = null;
 
         res.setHeader('Content-Type', 'image/png');
         return res.status(200).json({ image: `data:image/png;base64,${screenshot}` });
